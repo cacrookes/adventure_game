@@ -10,6 +10,7 @@ Written by: Christopher Crookes
 import time
 import random
 from game_state import GameState as gs
+from monster import Monster as mn
 
 
 def print_sleep(text_to_print, seconds):
@@ -95,7 +96,7 @@ def castle(game):
         if answer == '1':
             game.inventory.append('Stake')
 
-    print('You enter through the gate into the main hall.', 1)
+    print_sleep('You enter through the gate into the main hall.', 1)
     random_monster = random.randint(1, 3)
     switcher = {
         1: {'monster_type': 'Werewolf',
@@ -125,10 +126,59 @@ def castle(game):
             'dexterity': 70
            }
     }
-    monster = switcher[random_monster]
-    print(monster['description'])
+    monster = mn(switcher[random_monster])
+
+    print_sleep('Your blood curdles as you sense the presence of evil '
+                'lurking in the shadows.', 1)
+    print_sleep('Rushing out to greet you is one of Timmy\'s henchmen. '
+                'It\'s a {}!'.format(monster.monster_type), 1)
+    print_sleep(monster.description, 1)
+    
+    battle_system(game, monster)
 
     game.location = 'field'
+
+
+def battle_system(game, monster):
+    """Handle battles between the player and monsters."""
+    print_sleep('*** BATTLE!!!! ***', 1)
+    while True:
+        print_sleep('Your Health: {}'.format(game.health), 1)
+        print_sleep(monster.display_stats(), 1)
+        print('*' * 25)
+        print('Press 1 to attack the {}.'.format(monster.monster_type))
+        print('Press 2 to cowardly run away.')
+        print('*' * 25)
+        answer = present_choice(['1', '2'])
+        if answer == '1':
+            hit_chance = random.randint(1, 100)
+            if hit_chance < (100 - monster.dexterity + 2*game.experience):
+                damage = random.randint(30, 70) + 2*game.experience
+                print_sleep('You landed a hit with {} damage!'
+                            .format(damage), 1)
+                print_sleep('Your experience has increased.', 1)
+                game.increase_experience()
+                monster.take_damage(damage)
+                if not monster.still_alive():
+                    print_sleep('You\'ve slain the {}!'
+                                .format(monster.monster_type))
+                    break
+            else:
+                print_sleep('You missed!', 1)
+
+        elif answer == '2':
+            dash_chance = random.randint(1, 100)
+            if dash_chance < (100 - monster.dexterity + 2*game.experience):
+                print_sleep('Phew, that was close! You successfully escaped',
+                             1)
+                print_sleep('Your experience has increased.', 1)
+                game.increase_experience()
+                game.location = 'field'
+                break
+            else:
+                print_sleep('Oh no! The {} blocked your escape!'
+                            .format(monster.monster_type), 1)
+
 
 
 def town(game):
@@ -193,6 +243,9 @@ def market(game):
         if answer == '2':
             print_sleep('You have added garlic to your inventory!', 1)
             game.inventory.append('garlic')
+        if answer != '3':
+            print_sleep('Your experience has increased.', 1)
+            game.increase_experience()
 
 
 def opening_scene():
