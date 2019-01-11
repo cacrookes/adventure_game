@@ -1,7 +1,7 @@
 """
-This file contains the game state class.
+This file contains the GameState class.
 
-The game state class contains persistent player and game attributes.
+The GameState class contains persistent player and game attributes.
 """
 
 class GameState:
