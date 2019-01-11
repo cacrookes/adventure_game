@@ -19,3 +19,7 @@ class GameState:
               ', '.join([x for x in self.inventory]))
         print('Your health is: {}'.format(self.health))
         print('You have {} experience points'.format(self.experience))
+
+    def increase_experience(self):
+        """Increment the player's experience by 1."""
+        self.experience += 1
