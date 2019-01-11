@@ -112,7 +112,7 @@ def battle_system(game, monster):
             game.take_damage(monster.strength)
             if not game.still_alive():
                 print_sleep('You\'ve died!', 1)
-            break
+                break
 
 
 def open_field(game):
@@ -193,9 +193,9 @@ def castle(game):
     battle_system(game, monster)
 
 
-def thrown_room(game):
-    """Handle the thrown room area game play."""
-    print_sleep('You enter a dark thrown room. A large blood red thrown sits '
+def throne_room(game):
+    """Handle the throne room area game play."""
+    print_sleep('You enter a dark throne room. A large blood red throne sits '
                 'in the middle of the room.', 1)
     print_sleep('A glint of shimmering light catches your eye to your right. '
                 'You approach a large ornate mirror. You feel drawn to it.\n'
@@ -212,11 +212,21 @@ def thrown_room(game):
                 'of any other being though.\nIt\'s not until you feel the '
                 'pressure of the needle like teeth on your neck that you '
                 'are able to finally wrest yourself free of the mirror\'s '
-                'enchancements.', 1)
+                'enchancements.', 5)
     
     if 'garlic' in game.inventory:
         #TODO garlic scene
-        print()
+        print_sleep('\nYou feel the life drain out of your body as Timmy\'s '
+                    'sinks into your neck. Timmy grabs the garlic tied '
+                    'around your neck as your near lifeless body crumples to '
+                    'the floor', 1)
+        print_sleep('"Did you honestly think something as paltry as a clove '
+                    'of garlic would keep you safe from ME? BWA HA HA. '
+                    'Foolish human."', 3)
+        print_sleep('Timmy\'s diabolical, mocking laughter is the last '
+                    'thing you hear as you slip into unconciousness.', 1)
+        print_sleep('\nThank you for playing. Unfortunately you make a '
+                    'better Vampire meal than a hero!', 1)
     elif 'turnip' in game.inventory:
         #TODO turnip scene
         print()
@@ -321,7 +331,7 @@ def main():
             'field': open_field,
             'castle': castle,
             'town': town,
-            'thrown_room': thrown_room
+            'throne_room': throne_room
         }
         switcher[game.location](game)
 
