@@ -8,6 +8,7 @@ Written by: Christopher Crookes
 """
 
 import time
+import random
 from game_state import GameState as gs
 
 
@@ -78,12 +79,64 @@ def open_field(game):
 
 
 def castle(game):
-    print_sleep('You are at the gate of a large castle.', 1)
+    """Handle the castle area of the game.
 
-    game.location = location
+    The castle is where the user will face Timmy the terrible and his
+    henchmen."""
+    print_sleep('You are at the gate of a large castle.', 1)
+    if 'Stake' not in game.inventory:
+        print_sleep('You notice a wooden stake laying in the grass to your '
+                    'side. That may come it handy for killing vampires!', 1)
+        print('*' * 25)
+        print('Press 1 to go pick up the stake.')
+        print('Press 2 to leave the stake. Who knows where its been!')
+        print('*' * 25)
+        answer = present_choice(['1', '2'])
+        if answer == '1':
+            game.inventory.append('Stake')
+
+    print('You enter through the gate into the main hall.', 1)
+    random_monster = random.randint(1, 3)
+    switcher = {
+        1: {'monster_type': 'Werewolf',
+            'description': ('Strong and fast, the Werewolf is one of the '
+                            'deadliest monsters in the realm. Only the most '
+                            'experienced warriors dare fight one.'),
+            'health': 100,
+            'strength': 50,
+            'dexterity': 20
+           },
+        2: {'monster_type': 'Ogre',
+            'description': ('Strong and resilient, the Ogre can crush a man '
+                            'in a single blow and can withstand a beating. '
+                            'However if you dodge this lumbering beast\'s '
+                            'clumsy strikes, you may have a chance.'),
+            'health': 200,
+            'strength': 100,
+            'dexterity': 1
+           },
+        3: {'monster_type': 'Bunny',
+            'description': ('These cute little balls of pure evil don\'t '
+                            'look like much of a threat. One solid whack '
+                            'will take them out. That is if you can keep up '
+                            'with the speedy little critters.'),
+            'health': 5,
+            'strength': 1,
+            'dexterity': 70
+           }
+    }
+    monster = switcher[random_monster]
+    print(monster['description'])
+
+    game.location = 'field'
 
 
 def town(game):
+    """Handle the town area game play.
+
+    In the town, the user can rest at the inn to recuperate their health,
+    or aquire items at the market.
+    """
     location = 'town'
     print_sleep('You enter a quiet, subdued town', 1)
 
@@ -115,6 +168,11 @@ def town(game):
 
 
 def market(game):
+    """Handle the market area game play.
+
+    The market is where the user can acquire items that may help them on 
+    their quest.
+    """
     if {'turnip', 'garlic'}.intersection(game.inventory):
         print_sleep('"We are all sold out now. Sorry! '
                     'Please save our town!"', 1)
