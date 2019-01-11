@@ -23,3 +23,15 @@ class GameState:
     def increase_experience(self):
         """Increment the player's experience by 1."""
         self.experience += 1
+
+    def take_damage(self, damage):
+        """Reduce the player's health based on the amount of damage.
+        """
+        self.health -= damage
+
+    def still_alive(self):
+        """Returns whether the player is still alive or not."""
+        if self.health > 0:
+            return True
+        else:
+            return False
