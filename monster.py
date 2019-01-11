@@ -4,6 +4,7 @@ This file contains the Monster class.
 The Monster class encapsules the data for a monster character.
 """
 
+
 class Monster:
     def __init__(self, monster):
         self.health = monster['health']
@@ -15,8 +16,8 @@ class Monster:
     def display_stats(self):
         """Return the monster's health, strenght, and dexterity."""
         output = ('Monster: {} - Health: {} - Strength: {} - Dexterity: {}'
-                 .format(self.monster_type, self.health, self. strength, 
-                      self.dexterity))
+                  .format(self.monster_type, self.health, self. strength,
+                          self.dexterity))
 
         return output
 
