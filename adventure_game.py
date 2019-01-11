@@ -104,8 +104,8 @@ def castle(game):
                             'deadliest monsters in the realm. Only the most '
                             'experienced warriors dare fight one.'),
             'health': 100,
-            'strength': 50,
-            'dexterity': 20
+            'strength': 35,
+            'dexterity': 30
            },
         2: {'monster_type': 'Ogre',
             'description': ('Strong and resilient, the Ogre can crush a man '
@@ -114,7 +114,7 @@ def castle(game):
                             'clumsy strikes, you may have a chance.'),
             'health': 200,
             'strength': 100,
-            'dexterity': 1
+            'dexterity': 15
            },
         3: {'monster_type': 'Bunny',
             'description': ('These cute little balls of pure evil don\'t '
@@ -152,7 +152,7 @@ def battle_system(game, monster):
         answer = present_choice(['1', '2'])
         if answer == '1':
             hit_chance = random.randint(1, 100)
-            if hit_chance < (100 - monster.dexterity + 2*game.experience):
+            if hit_chance < (100 - monster.dexterity + 2 * game.experience):
                 damage = random.randint(30, 70) + 2*game.experience
                 print_sleep('You landed a hit with {} damage!'
                             .format(damage), 1)
@@ -161,14 +161,14 @@ def battle_system(game, monster):
                 monster.take_damage(damage)
                 if not monster.still_alive():
                     print_sleep('You\'ve slain the {}!'
-                                .format(monster.monster_type))
+                                .format(monster.monster_type), 1)
                     break
             else:
                 print_sleep('You missed!', 1)
 
         elif answer == '2':
             dash_chance = random.randint(1, 100)
-            if dash_chance < (100 - monster.dexterity + 2*game.experience):
+            if dash_chance < (100 - monster.dexterity + 2 * game.experience):
                 print_sleep('Phew, that was close! You successfully escaped',
                              1)
                 print_sleep('Your experience has increased.', 1)
@@ -179,6 +179,20 @@ def battle_system(game, monster):
                 print_sleep('Oh no! The {} blocked your escape!'
                             .format(monster.monster_type), 1)
 
+        print_sleep('The {} attacks you!'.format(monster.monster_type), 1)
+        defend_chance = random.randint(1, 100)
+        if defend_chance < (100 - monster.dexterity + 2 * game.experience):
+            print_sleep('The {} missed!'.format(monster.monster_type), 1)
+            print_sleep('Your experience has increased.', 1)
+            game.increase_experience()
+        else:
+            print_sleep('You\'ve been hit!', 1)
+            print_sleep('The {} did {} damage'
+                        .format(monster.monster_type, monster.strength), 1)
+            game.take_damage(monster.strength)
+            if not game.still_alive():
+                print_sleep('You\'ve died!', 1)
+            break
 
 
 def town(game):
