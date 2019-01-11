@@ -19,4 +19,15 @@ class Monster:
                       self.dexterity))
 
         return output
- 
+
+    def take_damage(self, damage):
+        """Reduce the monster's health based on the amount of damage.
+        """
+        self.health -= damage
+
+    def still_alive(self):
+        """Returns whether the monster is still alive or not."""
+        if self.health > 0:
+            return True
+        else:
+            return False
