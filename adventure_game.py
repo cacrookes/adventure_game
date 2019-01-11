@@ -12,6 +12,7 @@ import random
 from game_state import GameState as gs
 from monster import Monster as mn
 
+pause = 2
 
 def print_sleep(text_to_print, seconds):
     """Print text to the console and wait a specified number of seconds.
@@ -60,10 +61,10 @@ def present_choice(choices):
 
 def battle_system(game, monster):
     """Handle battles between the player and monsters."""
-    print_sleep('*** BATTLE!!!! ***', 1)
+    print_sleep('*** BATTLE!!!! ***', pause)
     while True:
-        print_sleep('Your Health: {}'.format(game.health), 1)
-        print_sleep(monster.display_stats(), 1)
+        print_sleep('Your Health: {}'.format(game.health), pause)
+        print_sleep(monster.display_stats(), pause)
         print('*' * 25)
         print('Press 1 to attack the {}.'.format(monster.monster_type))
         print('Press 2 to cowardly run away.')
@@ -74,53 +75,53 @@ def battle_system(game, monster):
             if hit_chance < (100 - monster.dexterity + 2 * game.experience):
                 damage = random.randint(30, 70) + 2*game.experience
                 print_sleep('You landed a hit with {} damage!'
-                            .format(damage), 1)
-                print_sleep('Your experience has increased.', 1)
+                            .format(damage), pause)
+                print_sleep('Your experience has increased.', pause)
                 game.increase_experience()
                 monster.take_damage(damage)
                 if not monster.still_alive():
                     print_sleep('You\'ve slain the {}!'
-                                .format(monster.monster_type), 1)
+                                .format(monster.monster_type), pause)
                     game.location = 'throne_room'
                     break
             else:
-                print_sleep('You missed!', 1)
+                print_sleep('You missed!', pause)
 
         elif answer == '2':
             dash_chance = random.randint(1, 100)
             if dash_chance < (100 - monster.dexterity + 2 * game.experience):
                 print_sleep('Phew, that was close! You successfully escaped',
-                             1)
-                print_sleep('Your experience has increased.', 1)
+                             pause)
+                print_sleep('Your experience has increased.', pause)
                 game.increase_experience()
                 game.location = 'field'
                 break
             else:
                 print_sleep('Oh no! The {} blocked your escape!'
-                            .format(monster.monster_type), 1)
+                            .format(monster.monster_type), pause)
 
-        print_sleep('The {} attacks you!'.format(monster.monster_type), 1)
+        print_sleep('The {} attacks you!'.format(monster.monster_type), pause)
         defend_chance = random.randint(1, 100)
         if defend_chance < (100 - monster.dexterity + 2 * game.experience):
-            print_sleep('The {} missed!'.format(monster.monster_type), 1)
-            print_sleep('Your experience has increased.', 1)
+            print_sleep('The {} missed!'.format(monster.monster_type), pause)
+            print_sleep('Your experience has increased.', pause)
             game.increase_experience()
         else:
-            print_sleep('You\'ve been hit!', 1)
+            print_sleep('You\'ve been hit!', pause)
             print_sleep('The {} did {} damage'
-                        .format(monster.monster_type, monster.strength), 1)
+                        .format(monster.monster_type, monster.strength), pause)
             game.take_damage(monster.strength)
             if not game.still_alive():
-                print_sleep('You\'ve died!', 1)
+                print_sleep('You\'ve died!', pause)
                 break
 
 
 def open_field(game):
     """The starting location of the game."""
 
-    print_sleep('You are in an open field.', 1)
+    print_sleep('You are in an open field.', pause)
     print_sleep('There is a large, ominous castle up ahead. There is a quaint '
-          'town to your right', 1)
+          'town to your right', pause)
     print('*' * 25)
     print('Press 1 to go to the castle.')
     print('Press 2 to go to the town.')
@@ -140,10 +141,10 @@ def castle(game):
 
     The castle is where the user will face Timmy the terrible and his
     henchmen."""
-    print_sleep('You are at the gate of a large castle.', 1)
+    print_sleep('You are at the gate of a large castle.', pause)
     if 'Stake' not in game.inventory:
         print_sleep('You notice a wooden stake laying in the grass to your '
-                    'side. That may come it handy for killing vampires!', 1)
+                    'side. That may come it handy for killing vampires!', pause)
         print('*' * 25)
         print('Press 1 to go pick up the stake.')
         print('Press 2 to leave the stake. Who knows where its been!')
@@ -152,7 +153,7 @@ def castle(game):
         if answer == '1':
             game.inventory.append('Stake')
 
-    print_sleep('You enter through the gate into the main hall.', 1)
+    print_sleep('You enter through the gate into the main hall.', pause)
     random_monster = random.randint(1, 3)
     switcher = {
         1: {'monster_type': 'Werewolf',
@@ -185,10 +186,10 @@ def castle(game):
     monster = mn(switcher[random_monster])
 
     print_sleep('Your blood curdles as you sense the presence of evil '
-                'lurking in the shadows.', 1)
+                'lurking in the shadows.', pause)
     print_sleep('Rushing out to greet you is one of Timmy\'s henchmen. '
-                'It\'s a {}!'.format(monster.monster_type), 1)
-    print_sleep(monster.description, 1)
+                'It\'s a {}!'.format(monster.monster_type), pause)
+    print_sleep(monster.description, pause)
     
     battle_system(game, monster)
 
@@ -196,43 +197,107 @@ def castle(game):
 def throne_room(game):
     """Handle the throne room area game play."""
     print_sleep('You enter a dark throne room. A large blood red throne sits '
-                'in the middle of the room.', 1)
+                'in the middle of the room.', pause)
     print_sleep('A glint of shimmering light catches your eye to your right. '
                 'You approach a large ornate mirror. You feel drawn to it.\n'
-                'Enraptured, you gaze at your visage in the reflection.', 1)
+                'Enraptured, you gaze at your visage in the reflection.', pause)
     print_sleep('You are familiar enough with magical objects to realize '
                 'the mirror is enchanted with dark magic. However you can\'t'
                 'seem to break free of it\'s spell as you continue to gaze '
-                'at your own reflection.', 1)
+                'at your own reflection.', pause)
     print_sleep('It\'s then that you feel the clawed hand grasp your '
                 'shoulder. Your heart nearly stops pounding as you are '
                 'gripped by fear from the sense of ice cold breath on the '
-                'back of your neck.', 1)
+                'back of your neck.', pause)
     print_sleep('The reflection in the mirror does not betray the presence '
                 'of any other being though.\nIt\'s not until you feel the '
                 'pressure of the needle like teeth on your neck that you '
                 'are able to finally wrest yourself free of the mirror\'s '
-                'enchancements.', 5)
+                'enchancements.', pause * 2)
     
     if 'garlic' in game.inventory:
-        #TODO garlic scene
         print_sleep('\nYou feel the life drain out of your body as Timmy\'s '
                     'sinks into your neck. Timmy grabs the garlic tied '
                     'around your neck as your near lifeless body crumples to '
-                    'the floor', 1)
+                    'the floor', pause)
         print_sleep('"Did you honestly think something as paltry as a clove '
                     'of garlic would keep you safe from ME? BWA HA HA. '
-                    'Foolish human."', 3)
+                    'Foolish human."', pause * 2)
         print_sleep('Timmy\'s diabolical, mocking laughter is the last '
-                    'thing you hear as you slip into unconciousness.', 1)
+                    'thing you hear as you slip into unconciousness.', pause)
         print_sleep('\nThank you for playing. Unfortunately you make a '
-                    'better Vampire meal than a hero!', 1)
+                    'better Vampire meal than a hero!', pause)
     elif 'turnip' in game.inventory:
-        #TODO turnip scene
-        print()
+        print_sleep('\nYou tense yourself waiting for the vampire to sink '
+                    'his fangs into your neck. You\'ve already resigned '
+                    'yourself to this fate.', pause * 2)
+        print_sleep('But to your surprise, you feel Timmy free you from his '
+                    'his grip. You stumble back, warily regarding your '
+                    'wouldbe executioner.', pause)
+        print_sleep('"Is that a turnip around your neck?" asks Timmy.', pause)
+        print_sleep('You clutch the vegetable tied around your neck. '
+                    'You bring yourself to nod meekly.', pause * 2)
+        print_sleep('Timmy reaches out for it longingly. "May I have it?" '
+                    'he asks.', pause)
+        print('*' * 25)
+        print('Press 1 hand Timmy the turnip.')
+        print('Press 2 to defy the dark lord.')
+        print('*' * 25)
+        answer = present_choice(['1', '2'])
+        if answer == '1':
+            print_sleep('Timmy takes the turnip in his hands and gently '
+                        'caresses it as he breathes in its scent.', pause)
+            print_sleep('"My mother used to feed me turnip\'s as a child." '
+                        'Timmy says with a forlorn look on his face.', pause)
+            print('*' * 25)
+            print('Press 1 to stab Timmy with the stake while he\'s '
+                  'distracted.')
+            print('Press 2 to do nothing.')
+            print('*' * 25)
+            answer = present_choice(['1', '2'])
+            if answer == '1':
+                print_sleep('As Timmy seems focused on the turnip, you '
+                            'quickly jump to your feet and rush at him '
+                            'with the stake', pause)
+                print_sleep('Timmy effortlessly disarms you and grabs you by '
+                            'the throat.', pause)
+                print_sleep('"Trecherous human!" bellows the vampire.', pause)
+                print_sleep('The world quickly fades to black as Timmy '
+                            'crushes your neck it his vice like grip.', pause)
+                print_sleep('\nThank you for playing. Unfortunately you make '
+                            'a better Vampire meal than a hero!', pause)
+            elif answer == '2':
+                print_sleep('"Perhaps I\'ve misunderstood you humans." '
+                            'says Timmy.', pause)
+                print_sleep('"Tell the town\'s people that as long as they '
+                            'regularly bring me turnips, they will enjoy '
+                            'my protection."', pause)
+                print_sleep('\n*** YOU WIN***\n', pause * 2)
+                print_sleep('Note only did you rescue the town from the '
+                            'wrath of the vampire, under his protection '
+                            'the town went on to enjoy centuries of peace '
+                            'and become a major centre of economic activity.')
+
+        elif answer == '2':
+            print_sleep('You see the rage build in Timmy\'s face.', pause)
+            print_sleep('"How dare you defy me!!!"', pause)
+            print_sleep('The last thing you see is Timmy\'s beastly form '
+                        'charging at you at unbelievable speed before '
+                        'everything goes black.', pause * 2)
+            print_sleep('\nThank you for playing. Unfortunately you make a '
+                        'better Vampire meal than a hero!', pause)
     else:
-        #TODO death scene
-        print()
+        print_sleep('\nYou feel the life drain out of your body as Timmy\'s '
+                    'sinks into your neck. You feel the blood flowing out '
+                    'of your neck as your near lifeless body crumples to '
+                    'the floor', pause)
+        print_sleep('"Did you honestly think a mere mortal like yourself '
+                    'could challenge the all mighty Timmy? BWA HA HA. '
+                    'Foolish human."', pause * 2)
+        print_sleep('Timmy\'s diabolical, mocking laughter is the last '
+                    'thing you hear as you slip into unconciousness.', pause)
+        print_sleep('\nThank you for playing. Unfortunately you make a '
+                    'better Vampire meal than a hero!', pause)
 
     game.game_over = True
 
@@ -244,16 +309,16 @@ def town(game):
     or aquire items at the market.
     """
     location = 'town'
-    print_sleep('You enter a quiet, subdued town', 1)
+    print_sleep('You enter a quiet, subdued town', pause)
 
     if not game.been_to_town:
-        print_sleep('You are greeted by an official looking individual.', 1)
+        print_sleep('You are greeted by an official looking individual.', pause)
         print_sleep('"Thank the gods you came. I am the mayor of this town. '
                     'If you can rid of Timmy the Terrible, we will pay you '
-                    '100 gold."', 1)
-        print_sleep('"Feel free to rest in the inn if you need to recuperate."', 1)
+                    '100 gold."', pause)
+        print_sleep('"Feel free to rest in the inn if you need to recuperate."', pause)
         print_sleep('"You may help yourself to anything useful to your quest '
-                    'in the market."', 1)
+                    'in the market."', pause)
         game.been_to_town = True
 
     print('*' * 25)
@@ -263,7 +328,7 @@ def town(game):
     print('*' * 25)
     answer = present_choice(['1', '2', '3'])
     if answer == '1':
-        print_sleep('What a great sleep! Your health is back to 100.', 1)
+        print_sleep('What a great sleep! Your health is back to 100.', pause)
         game.health = 100
     elif answer == '2':
         market(game)
@@ -281,12 +346,12 @@ def market(game):
     """
     if {'turnip', 'garlic'}.intersection(game.inventory):
         print_sleep('"We are all sold out now. Sorry! '
-                    'Please save our town!"', 1)
+                    'Please save our town!"', pause)
     else:
         print_sleep('"Brave warrior, '
-                    'help yourself to whatever you fancy."', 1)
+                    'help yourself to whatever you fancy."', pause)
         print_sleep('"We have the juiciest turnips, and the '
-                    'strongest garlic.', 1)
+                    'strongest garlic.', pause)
         print('*' * 25)
         print('Press 1 to go to take a turnip.')
         print('Press 2 to go to take some garlic.')
@@ -294,13 +359,13 @@ def market(game):
         print('*' * 25)
         answer = present_choice(['1', '2', '3'])
         if answer == '1':
-            print_sleep('You have added a turnip to your inventory!', 1)
+            print_sleep('You have added a turnip to your inventory!', pause)
             game.inventory.append('turnip')
         if answer == '2':
-            print_sleep('You have added garlic to your inventory!', 1)
+            print_sleep('You have added garlic to your inventory!', pause)
             game.inventory.append('garlic')
         if answer != '3':
-            print_sleep('Your experience has increased.', 1)
+            print_sleep('Your experience has increased.', pause)
             game.increase_experience()
 
 
@@ -315,10 +380,10 @@ def opening_scene():
     print_sleep('\n\n\n', 2)
 
     print_sleep('Welcome young warrior! The local town needs your help. '
-                'They are being terrorized by Timmy the Terrible!', 1)
+                'They are being terrorized by Timmy the Terrible!', pause)
     print_sleep('Although you are an experience monster hunter, this will be '
                 'your biggest challenge yet. Timmy the Terrible is an '
-                'ancient, powerful vampire.', 1)
+                'ancient, powerful vampire.', pause)
     
 
 def main():

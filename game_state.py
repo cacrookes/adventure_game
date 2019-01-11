@@ -34,4 +34,5 @@ class GameState:
         if self.health > 0:
             return True
         else:
+            self.game_over = True
             return False
